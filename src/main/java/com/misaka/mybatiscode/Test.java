@@ -40,9 +40,11 @@ public class Test {
 //        第三步 打开sqlsession
         SqlSession sqlSession = factory.openSession();
 
-//        第四步 获取Mapper接口[Dao接口]
+//        第四步 获取Mapper接口[Dao接口]  底层是动态代理
+//        这个UserDao是一个 return mapperProxyFactory.newInstance(sqlSession);这方法返回的动态代理对象
         UserDao userDao = sqlSession.getMapper(UserDao.class);
 //        第五步 调用Mapper接口对象的方法 [返回Domain]
+//        动态代理对象调用方法时 一定会先触发创建代理对象时 声明的invoke方法
        User user= userDao.selectById(1);
         System.out.println(user);
     }
