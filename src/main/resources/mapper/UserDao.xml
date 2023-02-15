@@ -6,4 +6,7 @@
     <select id="selectById" resultType="com.misaka.mybatiscode.doman.User">
         select * from users where users_id = #{id};
     </select>
+    <insert id="insertId" >
+        INSERT into users (users_id,user_mobile,user_password,usergroup_id) values (#{users_id},#{user_mobile},#{user_password},#{usergroup_id})
+    </insert>
 </mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+    <!--    配置Mybatis配置-->
+<!--    读库-->
+    <bean id="read" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <property name="username" value="root"></property>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/test"></property>
+        <property name="password" value="spc652324"/>
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+
+    </bean>
+<!--    写库-->
+    <bean id="write" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <property name="username" value="root"></property>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/test"></property>
+        <property name="password" value="spc652324"/>
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+
+    </bean>
+<!--对象 并且通过注入-->
+    <bean id="dynamicDataSource" class="com.misaka.mybatiscode.util.DynamicDataSource">
+        <property name="targetDataSources">
+            <map>
+                <entry key="READ" value-ref="read"/>
+                <entry key="WRITE" value-ref="write"/>
+            </map>
+        </property>
+    </bean>
+<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="dataSource" ref="dynamicDataSource"/>
+    <property name="configLocation" value="classpath:mybatis-config.xml"/>
+</bean>
+<!--    mapper-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="basePackage" value="com.misaka.mybatiscode.mapper"/>
+    </bean>
+<!--    数据源-->
+    <bean id="transationManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dynamicDataSource"/>
+    </bean>
+<!--注册驱动-->
+<!--    <tx:annotation-driven transaction-manager="transationManager"/>-->
+</beans>

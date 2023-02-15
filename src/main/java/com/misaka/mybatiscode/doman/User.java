@@ -12,6 +12,16 @@ public class User implements Serializable {
         return users_id;
     }
 
+    public User() {
+    }
+
+    public User(int users_id, String user_mobile, String user_password, int usergroup_id) {
+        this.users_id = users_id;
+        this.user_mobile = user_mobile;
+        this.user_password = user_password;
+        this.usergroup_id = usergroup_id;
+    }
+
     @Override
     public String toString() {
         return "User{" +
