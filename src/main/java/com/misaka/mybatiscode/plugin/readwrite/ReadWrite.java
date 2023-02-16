@@ -44,7 +44,7 @@ import java.util.Properties;
 * */
 @Intercepts({
         @Signature(
-                type = Executor.class, //要拦截的接口
+                type = Executor.class, //要拦截的接口 这个接口需要通过pluginAll方法存入 才能拦截
                 method = "update", // 拦截的方法
                 args = {MappedStatement.class, Object.class} //方法参数
         ),
@@ -107,7 +107,10 @@ Invocation参数 包装了目标方法的调用信息
 
     @Override
     public Object plugin(Object target) {
+        //先调用plugin
 //        这里底层会进行一个动态代理 并且使用Method.invoke(target,args) 来调用target对象的方法
+//      调用Interceptor接口的plugin
+//         Interceptor.super是实现类对象 这里是ReadWrite 也就是this 这样可以调用接口的default方法
         return Interceptor.super.plugin(target);
     }
 

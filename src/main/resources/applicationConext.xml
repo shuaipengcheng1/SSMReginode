@@ -23,6 +23,7 @@
     </bean>
 <!--对象 并且通过注入-->
     <bean id="dynamicDataSource" class="com.misaka.mybatiscode.util.DynamicDataSource">
+<!--       注入父类的属性 这个属性就是数据源的容器-->
         <property name="targetDataSources">
             <map>
                 <entry key="READ" value-ref="read"/>
