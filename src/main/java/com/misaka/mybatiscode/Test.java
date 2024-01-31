@@ -22,7 +22,7 @@ public class Test {
     public static void main(String[] args) throws IOException {
 ////        第一步 读取mybatis文件
 ////        通过classLoader来读取文件 并且返回一个输入流
-//        InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
+        InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
 ////        其实就是 ClassLoaderWrapper类的getResourceAsStream()方法的下面一行代码
 ////        InputStream returnValue = cl.getResourceAsStream(resource);
 ////       就是通过classLoader来加载一个流 并且返回一个输入流
@@ -37,14 +37,14 @@ public class Test {
 //        * 这一步主要的对象有 XpathParser对象 里面包含了Xml的解析信息  Configuration对象包含了xml信息的java对象
 //        * XmlParser通过在XMLConfigBuilder的构造函数中 聚合到了XMLConfigBuilder对象中 而Configuration对象是XMLConfigBuilder对象通过其构造函数调用super(new Configuration())在父类的构造函数中生成了configuration实例对象 并且赋值到父类的成员变量中 以此来实现依赖关系
 //        * */
-//        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(inputStream);
+        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(inputStream);
 //
 ////        第三步 打开sqlsession
-//        SqlSession sqlSession = factory.openSession();
+        SqlSession sqlSession = factory.openSession();
 //
 ////        第四步 获取Mapper接口[Dao接口]  底层是动态代理
-////        这个UserDao是一个 return mapperProxyFactory.newInstance(sqlSession);这方法返回的动态代理对象
-//        UserDao userDao = sqlSession.getMapper(UserDao.class);
+////        这个UserDao是一个 return mapperProxyFactory.newInstance(sqlSession);这方法返回的是DAO动态代理对象
+        UserDao userDao = sqlSession.getMapper(UserDao.class);
 ////        第五步 调用Mapper接口对象的方法 [返回Domain]
 ////        动态代理对象调用方法时 一定会先触发创建代理对象时 声明的invoke方法
 //        /*
@@ -70,18 +70,19 @@ public class Test {
 //                    param
 //                          * 外部传入参数的列表 或者是一个参数 可以是HashMap 也可以是一个值 刚才通过convertArgsToSqlCommandParam函数获取的返回值
 //        * */
-//       User user= userDao.selectById(1);
+       User user= userDao.selectById(1);
 //        System.out.println(user);
 
+        log.info("user is {}",user);
 
-        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:applicationConext.xml");
-//        获取Mapper
-        UserDao userDao = context.getBean(UserDao.class);
-        User user  = userDao.selectById(1);
-        int r = userDao.insertId(new User(0,"1","21",33));
-
-        System.out.println(user);
-        System.out.println(r);
+//        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:applicationConext.xml");
+////        获取Mapper
+//        UserDao userDao = context.getBean(UserDao.class);
+//        User user  = userDao.selectById(1);
+//        int r = userDao.insertId(new User(0,"1","21",33));
+//
+//        System.out.println(user);
+//        System.out.println(r);
 
 
 
